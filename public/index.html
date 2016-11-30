@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="file" multiple id="test"></input>
+<button type="submit" id="Submit">Submit</button>
+
+<script src="jquery.js"></script>
+<script>
+const Input=$("#test");
+const Button=$("#Submit");
+
+Button.on("click",function(e){
+const IMG=$("#test")[0].files[0];
+console.log(IMG);
+const form=new FormData();
+form.append("image",IMG);
+
+$.ajax({
+url:"/Pic",
+data:form,
+processData:false,
+contentType:false,
+type:"POST",
+
+success:function(){
+console.log("Success");
+},
+error:function(){
+  console.log("Error");
+}
+
+
+})
+
+
+
+
+})
+
+
+
+
+</script>
+</body>
+</html>
+,
