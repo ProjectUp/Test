@@ -16,7 +16,10 @@ res.send("index");
 
 
 app.post("/Pic",upload.any(),function(req,res,next){
+
 console.log("We received image Edo jan");
+res.send("image received");
+
 })
 
 
