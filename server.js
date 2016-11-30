@@ -8,7 +8,9 @@ const app = express();
 
 let storage = multer.diskStorage({
     destination : function (req, file, cb) {
-        cb(null, './uploads');
+        var dest="uploads/";
+        fs.mkdirSync(dest)
+        cb(null, dest);
     },
 
     filename : function (req, file, cb) {
@@ -17,7 +19,7 @@ let storage = multer.diskStorage({
     }
 });
 
-const upload = multer({storage : storage});
+const upload = multer({storage : storage,dest:"uploads/"});
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/",function(req,res){
