@@ -8,8 +8,9 @@ const bodyparser = require('body-parser');
 const app = express();
 app.use(bodyparser.urlencoded());
 app.use(bodyparser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-let dest = ""
+let dest = "";
 let storage = multer.diskStorage({
     destination : function (req, file, cb) {
         cb(null, './public/users/' + dest);
@@ -17,12 +18,12 @@ let storage = multer.diskStorage({
 
     filename : function (req, file, cb) {
         let extStart=file.originalname.indexOf(path.extname(file.originalname));
-        cb(null, file.originalname.substr(0, extStart) + path.extname(file.originalname));
+        cb(null, dest + path.extname(file.originalname));
     }
 });
 
 const upload = multer({storage : storage});
-app.use(express.static(path.join(__dirname, 'public')));
+
 
 app.get("/",function(req, res){
     res.render("index", function (err, html) {
@@ -37,7 +38,7 @@ app.get("/public/form.html",function(req,res){
 });
 
 
-app.post("/upload",upload.any(), function(req,res,next){
+app.post("/upload",upload.any(), function(req,res,next) {
     console.log(req.files);
    res.statusCode = 200;
    res.send('image received');
@@ -45,12 +46,10 @@ app.post("/upload",upload.any(), function(req,res,next){
 
 app.post("/text",function(req, res){
     console.log(req.body);
-    dest=req.body.username;
     fs.mkdirSync('./public/users/' + req.body.username);
-
+    dest=req.body.username;
     res.statusCode = 200;
     res.send("Done");
-
 });
 
 
