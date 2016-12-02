@@ -52,7 +52,7 @@
         const name = $name.val().length <= 1 ? alert("Length of your name must be at least 2 characters") : $name.val();
         const Lname = $Lname.val().length <= 1 ? alert("Length of your Last name must be at least 2 characters"): $Lname.val();
         const Email = $Email.val().length <= 1 ? alert("Length of your E-mail must be at least 2 characters"): $Email.val();
-        const Username = $Username.val().length <= 6 ? alert("Length of your Username must be at least 6 characters"):$Username.val();
+        const Username = $Username.val().length < 6 ? alert("Length of your Username must be at least 6 characters"):$Username.val();
         const Pass = $Pass.val().length <= 6 ? alert("Length of your Password must be at least 6 characters") : $Pass.val();
         const Team = $Team.val();
         const IMG = Input[0].files;
@@ -76,9 +76,13 @@
                     username : Username,
                     password : Pass
                 }),
+
                 contentType: 'application/json',
                 success: function (e) {
-                    console.log(e);
+                    if(e==="user exists"){
+                      console.log("Existing user");
+                    }
+                    else{
                     if (IMG.length != 0) {
                         $.ajax({
                             url: "/upload",
@@ -86,22 +90,24 @@
                             processData: false,
                             contentType: false,
                             type: "POST",
-                            success: function () {
+                            success: function (e) {
                                 console.log("Success");
                             },
-                            error: function () {
-                                console.log("Error");
+                            error: function (err) {
+                                console.log(err);
                                 alert('User already exists');
                             }
                         })
                     }
+                  }//end of else
                 },
                 error: function () {
-                    console.log("Error");
+                    console.log("Error while sending text");
                     alert('user exists');
                     location.reload();
                 }
             })
+
         }
         return false;
     })
