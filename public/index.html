@@ -2,61 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>ProjectUp</title>
 </head>
 <body>
-<input type="file" id="test" />
-<input type="text" id="Text" />
-<button type="submit" id="Submit">Submit</button>
-<a href="/public/form.html">Public</a>
-<script src="jquery.js"></script>
-<script>
-    const Input = $("#test");
-    const Button = $("#Submit");
-    Button.on("click",function(e){
-        let TInput = $("#Text").val();
-        console.log(TInput);
-        let IMG=Input[0].files;
-        let form = new FormData();
-        for (let i = 0; i < IMG.length; i++) {
-            form.append("image", IMG[i]);
-        }
+<a href="/public/form.html">Sign Up </a>
 
-       if(TInput.length<=5){
-            alert("Your username must be at least 6 characters");
-       } else {
-           $.ajax({
-               url: "/text",
-               type: 'post',
-               data: JSON.stringify({
-                   username: TInput
-               }),
-               contentType: 'application/json',
-               success: function (e) {
-                   console.log(e);
-                   if(IMG.length!=0) {
-                       $.ajax({
-                           url: "/upload",
-                           data: form,
-                           processData: false,
-                           contentType: false,
-                           type: "POST",
-                           success: function () {
-                               console.log("Success");
-                           },
-                           error: function () {
-                               console.log("Error");
-                           }
-                       })
-                   }
-               },
-               error: function () {
-                   console.log("Error");
-               }
-           })
-       }
 
-    })
-</script>
+
 </body>
 </html>

@@ -5,40 +5,106 @@
     <title>Title</title>
 </head>
 <body>
+<form>
 <span>First Name</span>
 <br>
-    <input type="text"/>
+<input type="text" required id="name" placeholder="First Name"/>
 <br>
-<span>Last Name:</span>
+<span>Last Name</span>
 <br>
-<input type="text"/>
+<input type="text" required id="last" placeholder="Last Name"/>
 <br>
-<button type="submit" id="Sub" ></button>
+<span>E-Mail</span>
+<br>
+<input type="email" required id="mail" placeholder="E-Mail Adress"/>
+<br>
+    <span>Username</span>
+    <br>
+<input type="text" required id="Username" placeholder="Username"/>
+<br>
+<span>Password</span>
+<br>
+<input type="password" required id="Pass" placeholder="Password"/>
+    <br>
 
-
-
-
-
+<span>Team Name</span>
+<br>
+<input type="text" id="Team" placeholder="Team Name">
+<br>
+    <span>Upload Profile Picture</span>
+<br>
+<input type="file" id="test" />
+    <br>
+<button type="submit" id="Submit">Submit</button>
+    <br>
 </form>
-<script src="../jquery.js"></script>
+<script src="/jquery.js"></script>
 <script>
-    $("#Sub").on("click",function(e){
+    const $Button = $("#Submit");
+    const $name = $('#name');
+    const $Lname = $('#last');
+    const $Email = $('#mail');
+    const $Username = $('#Username');
+    const $Pass = $('#Pass');
+    const $Team = $('#Team');
+    const Input = $("#test");
+    $Button.on("click", function(e) {
+        const name = $name.val().length <= 1 ? alert("Length of your name must be at least 2 characters") : $name.val();
+        const Lname = $Lname.val().length <= 1 ? alert("Length of your Last name must be at least 2 characters"): $Lname.val();
+        const Email = $Email.val().length <= 1 ? alert("Length of your E-mail must be at least 2 characters"): $Email.val();
+        const Username = $Username.val().length <= 6 ? alert("Length of your Username must be at least 6 characters"):$Username.val();
+        const Pass = $Pass.val().length <= 6 ? alert("Length of your Password must be at least 6 characters") : $Pass.val();
+        const Team = $Team.val();
+        const IMG = Input[0].files;
+        const form = new FormData();
+        console.log(Lname);
+        for (let i = 0; i < IMG.length; i++) {
+            form.append("image", IMG[i]);
+        }
+        if(name === undefined || Lname === undefined || Email === undefined || Email.indexOf('@') <= 0 || Username === undefined || Pass === undefined){
+            alert('Please complete the form properly');
+        }
+        else {
+            $.ajax({
+                url: "/text",
+                type: 'post',
+                data: JSON.stringify({
+                    firstName : name,
+                    lastName : Lname,
+                    email : Email,
+                    team : Team,
+                    username : Username,
+                    password : Pass
+                }),
 
-        $.ajax({
+                contentType: 'application/json',
+                success: function (e) {
+                    console.log(e);
+                    if (IMG.length != 0) {
+                        $.ajax({
+                            url: "/upload",
+                            data: form,
+                            processData: false,
+                            contentType: false,
+                            type: "POST",
+                            success: function () {
+                                console.log("Success");
+                            },
+                            error: function () {
+                                console.log("Error");
+                                alert('User already exists');
+                            }
+                        })
+                    }
+                },
+                error: function () {
+                    console.log("Error");
+                    alert('user exists');
+                }
+            })
 
-
-
-
-        })
-
-
-
+        }
     })
-
-
-
 </script>
-
-
 </body>
 </html>

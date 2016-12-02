@@ -39,17 +39,25 @@ app.get("/public/form.html",function(req,res){
 
 
 app.post("/upload",upload.any(), function(req,res,next) {
-    console.log(req.files);
+   console.log(req.files);
    res.statusCode = 200;
    res.send('image received');
 });
 
 app.post("/text",function(req, res){
     console.log(req.body);
-    fs.mkdirSync('./public/users/' + req.body.username);
-    dest=req.body.username;
-    res.statusCode = 200;
-    res.send("Done");
+    fs.exists('./public/users/' + req.body.username, function (exists) {
+       if (exists) {
+           console.log(exists);
+           res.statusCode = 404;
+           res.send('user exists');
+       } else {
+           dest = req.body.username;
+           fs.mkdirSync('./public/users/' + req.body.username);
+           res.statusCode = 200;
+           res.send("Done");
+       }
+    });
 });
 
 
