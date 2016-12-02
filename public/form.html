@@ -76,7 +76,6 @@
                     username : Username,
                     password : Pass
                 }),
-
                 contentType: 'application/json',
                 success: function (e) {
                     console.log(e);
@@ -100,10 +99,11 @@
                 error: function () {
                     console.log("Error");
                     alert('user exists');
+                    location.reload();
                 }
             })
-
         }
+        return false;
     })
 </script>
 </body>

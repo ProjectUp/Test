@@ -33,7 +33,7 @@ app.get("/",function(req, res){
         }
     });
 });
-app.get("/public/form.html",function(req,res){
+app.get("/public/form.html",function(req, res){
     res.sendfile("./public/form.html");
 });
 
@@ -50,12 +50,12 @@ app.post("/text",function(req, res){
        if (exists) {
            console.log(exists);
            res.statusCode = 404;
-           res.send('user exists');
+           res.send('user already exist');
        } else {
-           dest = req.body.username;
            fs.mkdirSync('./public/users/' + req.body.username);
-           res.statusCode = 200;
+           dest = req.body.username;
            res.send("Done");
+           res.statusCode = 200;
        }
     });
 });
