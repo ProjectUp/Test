@@ -5,7 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-<form>
+<form onsubmit="return false">
 <span>First Name</span>
 <br>
 <input type="text" required id="name" placeholder="First Name"/>
@@ -33,7 +33,7 @@
 <br>
     <span>Upload Profile Picture</span>
 <br>
-<input type="file" id="test" />
+<input type="file" accept="image/*" id="test" />
     <br>
 <button type="submit" id="Submit">Submit</button>
     <br>
@@ -109,7 +109,7 @@
             })
 
         }
-        return false;
+        //return false;
     })
 </script>
 </body>
