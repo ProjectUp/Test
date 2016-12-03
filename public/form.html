@@ -6,36 +6,35 @@
 </head>
 <body>
 <form onsubmit="return false">
-<span>First Name</span>
-<br>
-<input type="text" required id="name" placeholder="First Name"/>
-<br>
-<span>Last Name</span>
-<br>
-<input type="text" required id="last" placeholder="Last Name"/>
-<br>
-<span>E-Mail</span>
-<br>
-<input type="email" required id="mail" placeholder="E-Mail Adress"/>
-<br>
-    <span>Username</span>
+    <label for="name">First Name</label>
     <br>
-<input type="text" required id="Username" placeholder="Username"/>
-<br>
-<span>Password</span>
-<br>
-<input type="password" required id="Pass" placeholder="Password"/>
+    <input type="text" required id="name" placeholder="First Name"/>
     <br>
-
-<span>Team Name</span>
-<br>
-<input type="text" id="Team" placeholder="Team Name">
-<br>
-    <span>Upload Profile Picture</span>
-<br>
-<input type="file" accept="image/*" id="test" />
+    <label for="last">Last Name</label>
     <br>
-<button type="submit" id="Submit">Submit</button>
+    <input type="text" required id="last" placeholder="Last Name"/>
+    <br>
+    <label for="mail">E-Mail Adress</label>
+    <br>
+    <input type="email" required id="mail" placeholder="E-Mail Adress"/>
+    <br>
+    <label for="Username">Username</label>
+    <br>
+    <input type="text" required id="Username" placeholder="Username"/>
+    <br>
+    <label for="Pass">Password</label>
+    <br>
+    <input type="password" required id="Pass" placeholder="Password"/>
+    <br>
+    <label for="Team">Team Name</label>
+    <br>
+    <input type="text" id="Team" placeholder="Team Name">
+    <br>
+    <label for="images">Upload profile picture</label>
+    <br>
+    <input type="file" accept="image/*" id="images" />
+    <br>
+    <button type="submit" id="Submit">Submit</button>
     <br>
 </form>
 <script src="/jquery.js"></script>
@@ -47,7 +46,7 @@
     const $Username = $('#Username');
     const $Pass = $('#Pass');
     const $Team = $('#Team');
-    const Input = $("#test");
+    const Input = $("#images");
     $Button.on("click", function(e) {
         const name = $name.val().length <= 1 ? alert("Length of your name must be at least 2 characters") : $name.val();
         const Lname = $Lname.val().length <= 1 ? alert("Length of your Last name must be at least 2 characters"): $Lname.val();
@@ -57,7 +56,6 @@
         const Team = $Team.val();
         const IMG = Input[0].files;
         const form = new FormData();
-        console.log(Lname);
         for (let i = 0; i < IMG.length; i++) {
             form.append("image", IMG[i]);
         }
@@ -76,40 +74,34 @@
                     username : Username,
                     password : Pass
                 }),
-
                 contentType: 'application/json',
                 success: function (e) {
-                    if(e==="user exists"){
-                      console.log("Existing user");
-                    }
-                    else{
-                    if (IMG.length != 0) {
-                        $.ajax({
-                            url: "/upload",
-                            data: form,
-                            processData: false,
-                            contentType: false,
-                            type: "POST",
-                            success: function (e) {
-                                console.log("Success");
-                            },
-                            error: function (err) {
-                                console.log(err);
-                                alert('User already exists');
-                            }
-                        })
-                    }
-                  }//end of else
-                },
+                        if (IMG.length != 0) {
+                            $.ajax({
+                                url: "/upload",
+                                data: form,
+                                processData: false,
+                                contentType: false,
+                                type: "POST",
+                                success: function (e) {
+                                    console.log("Success");
+                                    window.location = '/';
+                                },
+                                error: function (err) {
+                                    console.log(err);
+                                    alert('User already exists');
+                                }
+                            })
+                        } else {
+                            window.location = '/';
+                        }
+                    },
                 error: function () {
-                    console.log("Error while sending text");
                     alert('user exists');
-                    location.reload();
+                    window.location.reload();
                 }
             })
-
         }
-        //return false;
     })
 </script>
 </body>
