@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProjectUp</title>
+</head>
+<body>
+<span>Username</span>
+<input type="text" id="user"/>
+<br>
+<span>Password</span>
+<input type="password" id="pass"/>
+<br>
+<button type="submit" id="sub"/>Log In</button>
+
+<script src="/jquery.js"></script>
+<script>
+  const b=$("#sub");
+b.on("click",function(){
+  const t1=$("#user").val();
+  const t2=$("#pass").val();
+$.ajax({
+type:"POST",
+url:"/CheckAndLogIn",
+data:JSON.stringify({
+user:t1,
+pass:t2,
+}),
+contentType: 'application/json',
+
+success:function(e){
+  console.log(e);
+  if(e==="Granted"){
+  console.log("Success");
+  $("body").append("<h1>Successfully Logged In<h1>");
+}
+  else if(e==="Denied"){
+  console.log("Fail");
+  $("body").append("<h1>Failed to Log In<h1>");
+}
+
+},
+error:function(e){
+console.log("Error");
+
+}
+
+
+
+
+
+})
+})//end of onclick
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
