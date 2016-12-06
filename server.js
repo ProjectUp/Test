@@ -111,7 +111,16 @@ console.log(Dat);
 
 fs.exists("./private/users/"+Dat,function(exists){
     if(exists){
-         res.send("Done Sending Text");
+      const name=JSON.parse(fs.readFileSync("./private/users/"+Dat+"/name.txt",'utf8')).fname;
+      const Surn=JSON.parse(fs.readFileSync("./private/users/"+Dat+"/Last_Name.txt",'utf8')).lname
+      const Team=fs.existsSync("./private/users/"+Dat+"/Team")===true ? JSON.parse(fs.readFileSync("./private/users/"+Dat+"/Team/team.txt",'utf8')).team : undefined;
+      console.log(name+" "+Surn+" ",Team);
+      const ToBeSent={
+        Name:name,
+        LName:Surn,
+        team:Team
+      }
+         res.send(JSON.stringify(ToBeSent));
     }
     else{
         console.log("Blown");

@@ -7,6 +7,7 @@
 <body>
 <p>This is profile</p>
 <div style="height:120px; width:180px" id="profpic"></div>
+<div id="UserInfo" ></div>
 
 <script src="/jquery.js"></script>
 <script>
@@ -32,6 +33,14 @@ type:"GET",
 url:"/GetThingsReady",
 data:{smth:log},
 success:function(e){
+console.log(e);
+const text=JSON.parse(e);
+$("#UserInfo").append("<h1>Name:"+text.Name+"</h1>");
+$("#UserInfo").append("<h1>Last Name:"+text.LName+"</h1>");
+if(text.team!=undefined){
+  $("#UserInfo").append("<h1>Team:"+text.team+"</h1>");
+}
+
 console.log("Text Done");
 },
 error:function(e){
