@@ -101,13 +101,42 @@ app.get("/private/ProfPage/prof.html", function(req, res, next) {
         res.send("Not Found");
     }
 });
+
+
+
+
 app.get("/GetThingsReady",function(req,res){
+const Dat=atob(atob(req.query.smth));
+console.log(Dat);
+
+fs.exists("./private/users/"+Dat,function(exists){
+    if(exists){
+         res.send("Done Sending Text");
+    }
+    else{
+        console.log("Blown");
+        res.statusCode=500;
+        res.send("OOPS Smth blown");
+    }
+  });
+
+});
+
+
+
+
+
+
+
+
+app.get("/GetThingReady",function(req,res){
    console.log(atob(atob(req.query.smth)));
    const Dat=atob(atob(req.query.smth));
-   fs.exists("./private/users/"+atob(atob(req.query.smth)),function(exists){
+   fs.exists("./private/users/"+Dat,function(exists){
        if(exists){
-           fs.readFile("./private/users/"+Dat+"/Images/"+Dat+".jpg",function(err,data){
-               console.log(data);
+           fs.readFile("./private/users/"+Dat.toString("base64")+"/Images/"+Dat+".jpg",function(err,data){
+               res.send(data.toString("base64"));
+
            })
        }
        else{
@@ -119,6 +148,10 @@ app.get("/GetThingsReady",function(req,res){
 
 
 });
+
+
+
+
 
 app.post("/lol", upload.any(), function(req, res) {
     console.log(req.files);
