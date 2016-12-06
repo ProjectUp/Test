@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ProjectUp</title>
+</head>
+<body>
+<p>This is profile</p>
+
+<script src="/jquery.js"></script>
+<script>
+console.log(window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length));
+const log = window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length);
+$.ajax({
+    type:"GET",
+    url:"/GetThingsReady",
+    data:{smth : log},
+    success:function(e){
+
+    },
+    error:function(e){
+
+
+    }
+
+
+})
+</script>
+</body>
+</html>
