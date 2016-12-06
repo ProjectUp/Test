@@ -7,49 +7,42 @@
 <body>
 <p>This is profile</p>
 <div style="height:120px; width:180px" id="profpic"></div>
-<div id="UserInfo" ></div>
+<div id="UserInfo"></div>
 
 <script src="/jquery.js"></script>
 <script>
-console.log(window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length));
-const log = window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length);
-$.ajax({
-    type:"GET",
-    url:"/GetThingReady",
-    data:{smth : log},
-    success:function(e){
+    console.log(window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length));
+    const log = window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length);
+    $.ajax({
+        type:"GET",
+        url:"/GetThingReady",
+        data:{smth : log},
+        success:function(e){
+            $("#profpic").append('<img style=\"height:120px;width:180px\" src="data:image/*;base64,'+e+'"/>');
+        },
+        error:function(e){
+            console.log("Error");
+        }
+    });
 
-$("#profpic").append('<img style=\"height:120px;width:180px\" src="data:image/*;base64,'+e+'"/>');
-    },
-    error:function(e){
-console.log("Error");
-
-    }
-
-
-});
-$.ajax({
-type:"GET",
-url:"/GetThingsReady",
-data:{smth:log},
-success:function(e){
-console.log(e);
-const text=JSON.parse(e);
-$("#UserInfo").append("<h1>Name:"+text.Name+"</h1>");
-$("#UserInfo").append("<h1>Last Name:"+text.LName+"</h1>");
-if(text.team!=undefined){
-  $("#UserInfo").append("<h1>Team:"+text.team+"</h1>");
-}
-
-console.log("Text Done");
-},
-error:function(e){
-  console.log("Oops smth went wrong!");
-}
-
-})
-
-
+    $.ajax({
+        type: "GET",
+        url: "/GetThingsReady",
+        data: {smth: log},
+        success: function(e) {
+            console.log(e);
+            const text = JSON.parse(e);
+            $("#UserInfo").append("<h1>Name:" + text.Name + "</h1>");
+            $("#UserInfo").append("<h1>Last Name:" + text.LName + "</h1>");
+            if (text.team != undefined) {
+                $("#UserInfo").append("<h1>Team:" + text.team + "</h1>");
+            }
+            console.log("Text Done");
+        },
+        error: function(e) {
+            console.log("Oops smth went wrong!");
+        }
+    })
 </script>
 </body>
 </html>

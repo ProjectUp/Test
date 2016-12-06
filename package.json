@@ -7,8 +7,7 @@
     "atob": "^2.0.3",
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
-    "multer": "^1.2.0",
-    "nodemon": "^1.11.0"
+    "multer": "^1.2.0"
   },
   "devDependencies": {
     "nodemon": "^1.11.0"

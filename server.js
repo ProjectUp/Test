@@ -101,66 +101,58 @@ app.get("/private/ProfPage/prof.html", function(req, res, next) {
         res.send("Not Found");
     }
 });
+app.get("/GetThingReady",function(req,res){
+    console.log(atob(atob(req.query.smth)));
+    const Dat=atob(atob(req.query.smth));
+    fs.exists("./private/users/"+Dat,function(exists){
+        if(exists){
+            fs.exists("./private/users/"+Dat+'/Images', function (exists) {
+               if(exists) {
+                   fs.readdir("./private/users/" + Dat + "/Images/", function (err, data) {
+                       console.log(path.extname(data[0]));
+                       const ext = path.extname(data[0]);
+                       fs.readFile("./private/users/" + Dat + "/Images/" + Dat + ext, function (err, data) {
+                            res.send(data.toString("base64"));
+                       });
+                   });
+               } else {
+                   res.send('The user has no image');
+               }
+            });
+        }
+        else{
+            console.log("Blown");
+            res.statusCode=500;
+            res.send("OOPS Smth blown");
+        }
+    });
 
 
-
+});
 
 app.get("/GetThingsReady",function(req,res){
-const Dat=atob(atob(req.query.smth));
-console.log(Dat);
-
-fs.exists("./private/users/"+Dat,function(exists){
-    if(exists){
-      const name=JSON.parse(fs.readFileSync("./private/users/"+Dat+"/name.txt",'utf8')).fname;
-      const Surn=JSON.parse(fs.readFileSync("./private/users/"+Dat+"/Last_Name.txt",'utf8')).lname
-      const Team=fs.existsSync("./private/users/"+Dat+"/Team")===true ? JSON.parse(fs.readFileSync("./private/users/"+Dat+"/Team/team.txt",'utf8')).team : undefined;
-      console.log(name+" "+Surn+" ",Team);
-      const ToBeSent={
-        Name:name,
-        LName:Surn,
-        team:Team
-      }
-         res.send(JSON.stringify(ToBeSent));
-    }
-    else{
-        console.log("Blown");
-        res.statusCode=500;
-        res.send("OOPS Smth blown");
-    }
-  });
-
+    const Dat=atob(atob(req.query.smth));
+    console.log(Dat);
+    fs.exists("./private/users/"+Dat,function(exists){
+        if(exists){
+            const name=JSON.parse(fs.readFileSync("./private/users/"+Dat+"/name.txt",'utf8')).fname;
+            const Surn=JSON.parse(fs.readFileSync("./private/users/"+Dat+"/Last_Name.txt",'utf8')).lname;
+            const Team=fs.existsSync("./private/users/"+Dat+"/Team")===true ? JSON.parse(fs.readFileSync("./private/users/"+Dat+"/Team/team.txt",'utf8')).team : undefined;
+            console.log(name+" "+Surn+" ",Team);
+            const ToBeSent={
+                Name:name,
+                LName:Surn,
+                team:Team
+            };
+            res.send(JSON.stringify(ToBeSent));
+        }
+        else{
+            console.log("Blown");
+            res.statusCode=500;
+            res.send("OOPS Smth blown");
+        }
+    });
 });
-
-
-
-
-
-
-
-
-app.get("/GetThingReady",function(req,res){
-   console.log(atob(atob(req.query.smth)));
-   const Dat=atob(atob(req.query.smth));
-   fs.exists("./private/users/"+Dat,function(exists){
-       if(exists){
-           fs.readFile("./private/users/"+Dat.toString("base64")+"/Images/"+Dat+".jpg",function(err,data){
-               res.send(data.toString("base64"));
-
-           })
-       }
-       else{
-           console.log("Blown");
-           res.statusCode=500;
-           res.send("OOPS Smth blown");
-       }
-   });
-
-
-});
-
-
-
-
 
 app.post("/lol", upload.any(), function(req, res) {
     console.log(req.files);
@@ -183,13 +175,10 @@ app.post("/TXT", function(req, res, next) {
     });
 
 });
-//End of Form
 
 
-//Logging in
 app.post("/CheckAndLogIn", function(req, res) {
     console.log(req.body);
-    //checking process
     fs.exists("./private/users/" + req.body.user, function(exists) {
         if (exists) {
             console.log("Username matches");
