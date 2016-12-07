@@ -1,4 +1,5 @@
 'use strict';
+
 const express = require("express");
 const fs = require("fs");
 const multer = require("multer");
@@ -13,7 +14,6 @@ app.use(bodyparser.urlencoded({
 app.use(bodyparser.json());
 app.use(express.static("public"));
 
-//Useful Functions
 
 
 const AddInfo = function(folder, Obj) {
@@ -89,7 +89,6 @@ app.get("/public/LogIn.html", function(req, res, next) { //get to the login page
 });
 app.get("/private/ProfPage/prof.html", function(req, res, next) {
     if(req.query.hdgcSaSAsSADASucac) {
-
         if (req.query.hdgcSaSAsSADASucac.length >= 6) {
             res.sendFile(path.join(__dirname, '/private/ProfPage/prof.html'));
         }
@@ -126,8 +125,6 @@ app.get("/GetThingReady",function(req,res){
             res.send("OOPS Smth blown");
         }
     });
-
-
 });
 
 app.get("/GetThingsReady",function(req,res){
@@ -152,6 +149,20 @@ app.get("/GetThingsReady",function(req,res){
             res.send("OOPS Smth blown");
         }
     });
+});
+
+app.get('/private/ProfPage/projectUpload', function (req, res) {
+    const user = atob(atob(req.query.jahsdhfggahsjdhfg));
+    console.log(user);
+    fs.exists('./private/users/' + user, function (exists) {
+        if(exists) {
+            res.sendFile(path.join(__dirname, '/private/ProfPage/Project.html'));
+        } else {
+            res.statusCode = 500;
+            res.send('Something blew up');
+        }
+    });
+    
 });
 
 app.post("/lol", upload.any(), function(req, res) {

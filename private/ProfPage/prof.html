@@ -13,6 +13,7 @@
 <script>
     console.log(window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length));
     const log = window.location.href.substr(window.location.href.indexOf('=')+1, window.location.href.length);
+    $('body').append('<a href="projectUpload?jahsdhfggahsjdhfg='+log+'">Upload a Project</a>');
     $.ajax({
         type:"GET",
         url:"/GetThingReady",
