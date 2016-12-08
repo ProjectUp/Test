@@ -52,7 +52,35 @@ const AddInfo = function(folder, Obj) {
         });
     }
     return 1;
+};
 
+const ProjectSet = function (user, categ, colabs, descr, project) {
+    if (categ !== 'Web Sites' && categ !== 'Blogs' && categ !== 'Other') {
+        let path = './private/Projects/Mobile Applications/' + categ + '/' + user + '/' + project;
+        fs.writeFile(path + '/title.txt', project, function (err) {
+            if (err) {
+                console.log(err);
+                return false;
+            }
+        });
+        if (colabs) {
+            fs.writeFile(path + '/colaborators.txt', colabs, function (err) {
+                if (err) {
+                    console.log(err);
+                    return false
+                }
+            })
+        }
+        if (descr) {
+            fs.writeFile(path + '/description.txt', descr, function (err) {
+               if (err) {
+                   console.log(err);
+                   return false
+               }
+            });
+        }
+        return 1;
+    }
 };
 //End of Useful functions
 
@@ -179,9 +207,7 @@ app.post("/TXT", function(req, res, next) {
         } else {
             dest = req.body.username;
             fs.mkdirSync('./private/users/' + req.body.username);
-            res.statusCode = 200;
             if (AddInfo(req.body.username, req.body)) res.send("Done");
-
         }
     });
 
@@ -212,6 +238,44 @@ app.post("/CheckAndLogIn", function(req, res) {
             console.log("Username doesn't match");
             res.send("Denied");
         }
+    });
+});
+
+app.post('/ProjectDetails', function (req, res) {
+    let user = atob(atob(req.body.user));
+    let categ = req.body.categ;
+    let project = req.body.title;
+    let colabs = req.body.colabs;
+    let descr = req.body.desc;
+    console.log(req.body);
+    fs.exists('./private/users/' + user, function (exists) {
+       if (exists) {
+           if (categ !== 'Web Sites' && categ !== 'Blogs' && categ !== 'Other') {
+               fs.exists('./private/Projects/Mobile Applications/' + categ + '/' + user, function (exists) {
+                   if (exists) {
+                       console.log('Yes');
+                   } else {
+                       fs.mkdirSync('./private/Projects/Mobile Applications/' + categ + '/' + user);
+                   }
+               });
+              fs.exists('./private/Projects/Mobile Applications/' + categ + '/' + user + '/' + project, function (exists) {
+                    if (exists) {
+                        res.send('Project already exists');
+                    } else {
+                        fs.mkdirSync('./private/Projects/Mobile Applications/' + categ + '/' + user + '/' + project);
+                        if (ProjectSet(user, categ, colabs, descr, project)) {
+                            res.send('Done');
+                        } else {
+                            res.statusCode = 500;
+                            res.send('Blown');
+                        }
+                    }
+              });
+           }
+       } else {
+           res.statusCode = 500;
+           res.send('Blown');
+       }
     });
 });
 
